@@ -36,10 +36,10 @@ namespace SampleShop.ProductManagement.Api.Controllers
                 UserRole = "User" }
         };
 
-        /// <summary>
-        /// Constructor
-        /// </summary>
-        /// <param name="config"></param>
+       /// <summary>
+       /// The Authentication Controller constructor.
+       /// </summary>
+       /// <param name="config"></param>
         public AuthenticationController(IConfiguration config)
         {
             _config = config;
@@ -52,14 +52,14 @@ namespace SampleShop.ProductManagement.Api.Controllers
         /// <returns></returns>
         [HttpPost]
         [AllowAnonymous]
-        public IActionResult Login([FromBody] User login) 
-        { 
-           
-            User user = AuthenticateUser(login); 
-            if (user != null) 
-            { 
-                var tokenString = GenerateJWTToken(user); 
-                return Ok(new { token = tokenString, userDetails = user, }); 
+        public IActionResult Login([FromBody] User login)
+        {
+
+            User user = AuthenticateUser(login);
+            if (user != null)
+            {
+                var tokenString = GenerateJWTToken(user);
+                return Ok(new { token = tokenString, userDetails = user, });
             }
             return Unauthorized();
         }
@@ -72,23 +72,22 @@ namespace SampleShop.ProductManagement.Api.Controllers
 
         private string GenerateJWTToken(User userInfo)
         {
-            var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_config["Jwt:SecretKey"])); 
-            var credentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256); 
-            var claims = new[] { 
-                new Claim(JwtRegisteredClaimNames.Sub, userInfo.UserName), 
-                new Claim("fullName", userInfo.FullName.ToString()), 
-                new Claim("role", userInfo.UserRole), 
-                new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()), }; 
-            
-            var token = new JwtSecurityToken(issuer: _config["Jwt:Issuer"], 
-                audience: _config["Jwt:Audience"], 
-                claims: claims, 
-                expires: DateTime.Now.AddMinutes(30), 
-                signingCredentials: credentials); 
+            var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_config["Jwt:SecretKey"]));
+            var credentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256);
+            var claims = new[] {
+                new Claim(JwtRegisteredClaimNames.Sub, userInfo.UserName),
+                new Claim("fullName", userInfo.FullName.ToString()),
+                new Claim("role", userInfo.UserRole),
+                new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()), };
+
+            var token = new JwtSecurityToken(issuer: _config["Jwt:Issuer"],
+                audience: _config["Jwt:Audience"],
+                claims: claims,
+                expires: DateTime.Now.AddMinutes(30),
+                signingCredentials: credentials);
 
             return new JwtSecurityTokenHandler().WriteToken(token);
         }
     }
 }
 
-    
