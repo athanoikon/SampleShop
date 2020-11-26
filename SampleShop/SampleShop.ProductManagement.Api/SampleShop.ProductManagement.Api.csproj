@@ -20,5 +20,10 @@
     <ProjectReference Include="..\SampleShop.ProductManagement.Models\SampleShop.ProductManagement.Models.csproj" />
   </ItemGroup>
 
+  <PropertyGroup>
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
+    <NoWarn>$(NoWarn);1591</NoWarn>
+  </PropertyGroup>
+
 
 </Project>

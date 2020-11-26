@@ -8,10 +8,13 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.IdentityModel.Tokens;
+using Microsoft.OpenApi.Models;
 using SampleShop.ProductManagement.Api.Extensions;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -30,6 +33,33 @@ namespace SampleShop.ProductManagement.Api
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllers();
+
+            services.AddSwaggerGen(c =>
+            {
+                c.SwaggerDoc("v1", new OpenApiInfo
+                {
+                    Version = "v1",
+                    Title = "SampleShop.ProductManagement.Api",
+                    Description = "Example ASP.NET Core Web API 3.0",
+                    TermsOfService = new Uri("https://example.com/terms"),
+                    Contact = new OpenApiContact
+                    {
+                        Name = "Nassia Oiko",
+                        Email = string.Empty,
+                        Url = new Uri("https://twitter.com/spboyer"),
+                    },
+                    License = new OpenApiLicense
+                    {
+                        Name = "Use under LICX",
+                        Url = new Uri("https://example.com/license"),
+                    }
+                });
+
+                var xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
+                var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
+                c.IncludeXmlComments(xmlPath);
+            });
+
             services.AddAuthentication(
             JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(
             options =>
@@ -63,6 +93,14 @@ namespace SampleShop.ProductManagement.Api
             {
                 app.UseDeveloperExceptionPage();
             }
+
+            app.UseSwagger();
+
+            app.UseSwaggerUI(c =>
+            {
+                c.SwaggerEndpoint("/swagger/v1/swagger.json", "SampleShop.ProductManagement V1");
+                c.RoutePrefix = string.Empty;
+            });
 
             app.UseHttpsRedirection();
 

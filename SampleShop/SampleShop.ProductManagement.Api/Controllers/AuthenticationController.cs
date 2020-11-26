@@ -36,10 +36,10 @@ namespace SampleShop.ProductManagement.Api.Controllers
                 UserRole = "User" }
         };
 
-        /// <summary>
-        /// Constructor
-        /// </summary>
-        /// <param name="config"></param>
+       /// <summary>
+       /// The Authentication Controller constructor.
+       /// </summary>
+       /// <param name="config"></param>
         public AuthenticationController(IConfiguration config)
         {
             _config = config;
