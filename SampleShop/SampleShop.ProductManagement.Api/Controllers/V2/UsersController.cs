@@ -7,12 +7,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace SampleShop.ProductManagement.Api.Controllers
+namespace SampleShop.ProductManagement.Api.Controllers.V2
 {
     /// <summary>
     /// UsersController
     /// </summary>
-    [Route("api/[controller]")]
+    [ApiVersion("2.0")]
+    [Route("api/v{version:apiVersion}/[controller]")]    
     [ApiController]
     public class UsersController : ControllerBase
     {

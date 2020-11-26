@@ -12,12 +12,13 @@ using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace SampleShop.ProductManagement.Api.Controllers
+namespace SampleShop.ProductManagement.Api.Controllers.V2
 {
     /// <summary>
     /// The Authentication Controller
     /// </summary>
-    [Route("api/[controller]/[action]")]
+    [ApiVersion("2.0")]
+    [Route("api/v{version:apiVersion}/[controller]/[action]")]
     [ApiController]
     public class AuthenticationController : ControllerBase
     {
